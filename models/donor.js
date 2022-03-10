@@ -13,26 +13,17 @@ module.exports = class Donor extends Sequelize.Model {
                 allowNull: false,
                 // unique: true,
             },
-            donationAmount: {
-                type: Sequelize.INTEGER.UNSIGNED,
-                allowNull: false
-            },
             role: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING(200),
                 allowNull: false
             },
-            major: {
+            belong: {
+                type: Sequelize.STRING(200),
+            },
+            position: {
                 type: Sequelize.STRING(20),
             },
-            class: {
-                type: Sequelize.INTEGER,
-            },
-            faculty: {
-                type: Sequelize.STRING(20),
-            },
-            facultyRole: {
-                type: Sequelize.STRING(20),
-            },
+
 
         }, {
             sequelize,

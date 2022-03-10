@@ -1,0 +1,38 @@
+{
+  "title": "IMG_1126.JPG",
+  "description": "",
+  "imageViews": "45",
+  "creationTime": {
+    "timestamp": "1539564188",
+    "formatted": "2018. 10. 15. 오전 12시 43분 8초 UTC"
+  },
+  "photoTakenTime": {
+    "timestamp": "1539310675",
+    "formatted": "2018. 10. 12. 오전 2시 17분 55초 UTC"
+  },
+  "geoData": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "geoDataExif": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "url": "https://lh3.googleusercontent.com/_Yyl35gAzegJbB1vjCo9DKj5hvPnDMIwtKBQ0YeO0L-B9VuDVcR1pjpTOa6C9YQO_kc6l3CUyHWPJemoaSnwYvItRw-tc7TdqQ0rnCkf",
+  "googlePhotosOrigin": {
+    "webUpload": {
+      "computerUpload": {
+      }
+    }
+  },
+  "photoLastModifiedTime": {
+    "timestamp": "1622376113",
+    "formatted": "2021. 5. 30. 오후 12시 1분 53초 UTC"
+  }
+}
