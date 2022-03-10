@@ -26,7 +26,10 @@ router.get('/club/:clubId', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        next(err);
+        res.json({
+            success: false,
+            error: err
+        })
     }
 });
 
@@ -77,7 +80,10 @@ router.get('/:donorId/detail', async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        next(err);
+        res.json({
+            success: false,
+            error: err
+        })
     }
 });
 
@@ -162,7 +168,10 @@ router.get('/:search/:clubId', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        next(err);
+        res.json({
+            success: false,
+            error: err
+        })
     }
 });
 
@@ -225,7 +234,10 @@ router.get('/:search', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        next(err);
+        res.json({
+            success: false,
+            error: err
+        })
     }
 });
 
