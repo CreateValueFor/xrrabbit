@@ -1,6 +1,6 @@
 const csvtojson = require('csvtojson');
 const mysql = require("mysql2");
-
+const fs = require('fs');
 // Database credentials
 const hostname = "localhost",
     username = "root",
@@ -24,12 +24,12 @@ const fileName = "./clubExcel/crimson.csv";
 // const fileName = "./clubExcel/default.csv";
 
 
-csvtojson().fromFile(fileName).then(source => {
+csvtojson().fromFile(fileName).then(async (source) => {
 
     // Fetching the data from each row 
     // and inserting to the table "sample"
     for (let i = 0; i < source.length; i++) {
-
+        const clubIdx = 9;
 
         let name = source[i]["상호명"],
             address = source[i]["주소"].split("☎")[0],
@@ -37,10 +37,13 @@ csvtojson().fromFile(fileName).then(source => {
             level = source[i]["등급"]
 
 
-
         let insertStatement =
             `INSERT IGNORE INTO crimsons values(?,?,?,?,?)`;
         let items = [i + 1, name, address, phone, level];
+
+        // let articleStatement =
+        //     `INSERT IGNORE INTO articles values(?,?,?,?,?)`;
+        // let article = [i + articleOffset, regDate, title, articleDir, i + offset];
 
         // Inserting data of current row
         // into database

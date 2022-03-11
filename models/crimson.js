@@ -31,6 +31,6 @@ module.exports = class Crimson extends Sequelize.Model {
         })
     }
     static associate(db) {
-
+        db.Crimson.hasMany(db.CrimsonArticle, { foreignKey: "crimson", sourceKey: 'id' })
     }
 }

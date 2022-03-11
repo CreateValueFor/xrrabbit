@@ -5,7 +5,9 @@ const Article = require("../models/article")
 const Crimson = require("../models/crimson")
 var router = express.Router();
 const fs = require('fs')
-
+const docx4js = require('docx4js')
+const docxtemplater = require('docxtemplater')
+const mammoth = require('mammoth')
 
 // 클럽 별 기부자 목록 보여주기
 router.get('/club/:clubId', async (req, res) => {
@@ -48,7 +50,7 @@ router.get('/:donorId/detail', async (req, res) => {
             nest: true
         })
 
-        if (![1, 9].includes(donors.club)) {
+        if (![7, 8].includes(donors.club)) {
             thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
             if (thumb) {
                 thumb = `/${donors.club}/${donors.name}/대표 사진` + thumb
@@ -57,10 +59,7 @@ router.get('/:donorId/detail', async (req, res) => {
             if (logo) {
                 logo = `/${donors.club}/${donors.name}/로고` + logo
             }
-            description = await fs.readdirSync(`./public/${donors.club}/${donors.name}/기부자 소개`)
-            if (description) {
-                description = `/${donors.club}/${donors.name}/기부자 소개` + description
-            }
+
             thumb_detail =
                 await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).map(item => {
                     return `/${donors.club}/${donors.name}/추가 사진` + item
@@ -72,7 +71,7 @@ router.get('/:donorId/detail', async (req, res) => {
             data: {
                 ...donors,
                 logo,
-                description,
+
                 thumb,
                 thumb_detail
             }
@@ -89,7 +88,10 @@ router.get('/:donorId/detail', async (req, res) => {
 
 // 기부자 기사 보여주기
 router.get('/:donorId/article', async (req, res, next) => {
+
     let articleImg = [];
+    let contents = "";
+
     try {
         const exDonor = await Donor.findOne({
             where: { id: req.params.donorId }
@@ -106,14 +108,22 @@ router.get('/:donorId/article', async (req, res, next) => {
             raw: true
         })
 
-        // articleImg =
-        //     await fs.readdirSync(`./public/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}`).map(item => {
-        //         return `/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}` + item
-        //     })
+        if (!article) {
+            return res.json({
+                success: false,
+                message: "기사가 존재하지 않는 기부자입니다."
+
+            })
+        }
+
         articleImg =
             await fs.readdirSync(`./public/${exDonor.club}/${exDonor.name}/기사`).map(item => {
-                return `/${exDonor.club}/${exDonor.name}/기사` + item
+                if (item.includes('txt')) {
+                    return
+                }
+                return `/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
             })
+        articleImg = articleImg.filter(item => item != null)
 
         return res.json({
             success: true,

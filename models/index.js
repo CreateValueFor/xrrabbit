@@ -3,6 +3,7 @@ const Donor = require("./donor")
 const Article = require("./article")
 const Club = require("./club")
 const Crimson = require("./crimson");
+const CrimsonArticle = require("./crimsonArticle")
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -16,15 +17,18 @@ db.Donor = Donor;
 db.Article = Article;
 db.Club = Club;
 db.Crimson = Crimson;
+db.CrimsonArticle = CrimsonArticle;
 
 Donor.init(sequelize)
 Article.init(sequelize);
 Club.init(sequelize)
 Crimson.init(sequelize)
+CrimsonArticle.init(sequelize)
 
 Donor.associate(db);
 Article.associate(db);
 Club.associate(db);
 Crimson.associate(db);
+CrimsonArticle.associate(db);
 
 module.exports = db;

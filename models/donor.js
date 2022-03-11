@@ -9,9 +9,12 @@ module.exports = class Donor extends Sequelize.Model {
             //     primaryKey: true
             // },
             name: {
-                type: Sequelize.STRING(),
+                type: Sequelize.STRING(20),
                 allowNull: false,
                 // unique: true,
+            },
+            description: {
+                type: Sequelize.TEXT,
             },
             role: {
                 type: Sequelize.STRING(200),
