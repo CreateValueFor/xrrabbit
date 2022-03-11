@@ -5,9 +5,8 @@ const Article = require("../models/article")
 const Crimson = require("../models/crimson")
 var router = express.Router();
 const fs = require('fs')
-const docx4js = require('docx4js')
-const docxtemplater = require('docxtemplater')
-const mammoth = require('mammoth')
+
+
 
 // 클럽 별 기부자 목록 보여주기
 router.get('/club/:clubId', async (req, res) => {
@@ -53,16 +52,16 @@ router.get('/:donorId/detail', async (req, res) => {
         if (![7, 8].includes(donors.club)) {
             thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
             if (thumb) {
-                thumb = `/${donors.club}/${donors.name}/대표 사진` + thumb
+                thumb = `/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
             logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`)
             if (logo) {
-                logo = `/${donors.club}/${donors.name}/로고` + logo
+                logo = `/${donors.club}/${donors.name}/로고/` + logo
             }
 
             thumb_detail =
                 await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).map(item => {
-                    return `/${donors.club}/${donors.name}/추가 사진` + item
+                    return `/${donors.club}/${donors.name}/추가 사진/` + item
                 })
         }
         return res.json({
