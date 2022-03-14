@@ -6,7 +6,7 @@ const Crimson = require("../models/crimson")
 var router = express.Router();
 const fs = require('fs')
 
-
+const BASE_URL = 'http://13.209.17.105:8000'
 
 // 클럽 별 기부자 목록 보여주기
 router.get('/club/:clubId', async (req, res) => {
@@ -43,7 +43,7 @@ router.get('/:donorId/detail', async (req, res) => {
     let thumb_detail = [];
     try {
         let donors;
-        // console.log(req.params.donorId.replace(/[^0-9]/g, ''))
+
         if (req.params.donorId.includes('crimson')) {
             donors = await Crimson.findOne({
                 where: { id: req.params.donorId.replace(/[^0-9]/g, '') },
@@ -68,16 +68,16 @@ router.get('/:donorId/detail', async (req, res) => {
         if (![7, 8].includes(donors.club)) {
             thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
             if (thumb) {
-                thumb = `/${donors.club}/${donors.name}/대표 사진/` + thumb
+                thumb = `${BASE_URL}/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
             logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`)
             if (logo) {
-                logo = `/${donors.club}/${donors.name}/로고/` + logo
+                logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
 
             thumb_detail =
                 await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).map(item => {
-                    return `/${donors.club}/${donors.name}/추가 사진/` + item
+                    return `${BASE_URL}/${donors.club}/${donors.name}/추가 사진/` + item
                 })
         }
         return res.json({
@@ -136,7 +136,7 @@ router.get('/:donorId/article', async (req, res, next) => {
                 if (item.includes('txt')) {
                     return
                 }
-                return `/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
+                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
             })
         articleImg = articleImg.filter(item => item != null)
 
