@@ -66,18 +66,18 @@ router.get('/:donorId/detail', async (req, res) => {
         }
 
         if (![7, 8].includes(donors.club)) {
-            thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
-            if (thumb.length > 0) {
+            thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`).filter(item => item.includes('jpg') || item.includes('png'))
+
+            if (thumb) {
                 thumb = `${BASE_URL}/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
-            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`)
-            console.log(logo)
-            if (logo.length > 0) {
+            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`).filter(item => item.includes('jpg') || item.includes('png'))
+            if (logo) {
                 logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
 
             thumb_detail =
-                await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).map(item => {
+                await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).filter(item => item.includes('jpg') || item.includes('png')).map(item => {
                     return `${BASE_URL}/${donors.club}/${donors.name}/추가 사진/` + item
                 })
         }
@@ -133,11 +133,9 @@ router.get('/:donorId/article', async (req, res, next) => {
         }
 
         articleImg =
-            await fs.readdirSync(`./public/${exDonor.club}/${exDonor.name}/기사`).map(item => {
-                if (item.includes('txt')) {
-                    return
-                }
-                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/` + item
+            await fs.readdirSync(`./public/${exDonor.club}/${exDonor.name}/기사`).filter(item => item.includes('jpg') || item.includes('png')).map(item => {
+
+                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
             })
         articleImg = articleImg.filter(item => item != null)
 
