@@ -11,7 +11,7 @@ const fs = require('fs')
 // 클럽 별 기부자 목록 보여주기
 router.get('/club/:clubId', async (req, res) => {
     try {
-        if (req.params.clubId === '8') {
+        if (req.params.clubId === '9') {
             const crimsons = await Crimson.findAll()
             return res.json({
                 success: true,
@@ -42,12 +42,28 @@ router.get('/:donorId/detail', async (req, res) => {
     let description = "";
     let thumb_detail = [];
     try {
-        const donors = await Donor.findOne({
-            include: [{ model: Article }],
-            where: { id: req.params.donorId },
-            raw: true,
-            nest: true
-        })
+        let donors;
+        // console.log(req.params.donorId.replace(/[^0-9]/g, ''))
+        if (req.params.donorId.includes('crimson')) {
+            donors = await Crimson.findOne({
+                where: { id: req.params.donorId.replace(/[^0-9]/g, '') },
+                raw: true,
+                nest: true
+            })
+            donors = {
+                ...donors,
+                club: 9
+            }
+            console.log(donors)
+        } else {
+            donors = await Donor.findOne({
+                include: [{ model: Article }],
+                where: { id: req.params.donorId },
+                raw: true,
+                nest: true
+            })
+
+        }
 
         if (![7, 8].includes(donors.club)) {
             thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
