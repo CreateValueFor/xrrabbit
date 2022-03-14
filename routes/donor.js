@@ -67,11 +67,12 @@ router.get('/:donorId/detail', async (req, res) => {
 
         if (![7, 8].includes(donors.club)) {
             thumb = await fs.readdirSync(`./public/${donors.club}/${donors.name}/대표 사진`)
-            if (thumb) {
+            if (thumb.length > 0) {
                 thumb = `${BASE_URL}/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
             logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`)
-            if (logo) {
+            console.log(logo)
+            if (logo.length > 0) {
                 logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
 
@@ -136,7 +137,7 @@ router.get('/:donorId/article', async (req, res, next) => {
                 if (item.includes('txt')) {
                     return
                 }
-                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
+                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/` + item
             })
         articleImg = articleImg.filter(item => item != null)
 
