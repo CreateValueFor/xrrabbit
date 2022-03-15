@@ -77,7 +77,7 @@ router.get('/:donorId/detail', async (req, res) => {
             }
 
             thumb_detail =
-                await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).filter(item => item.includes('jpg') || item.includes('png')).map(item => {
+                await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).filter(item => !item.includes('json') && !item.includes('gif') && item.includes('jpg') || item.includes('png')).map(item => {
                     return `${BASE_URL}/${donors.club}/${donors.name}/추가 사진/` + item
                 })
         }
