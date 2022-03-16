@@ -76,10 +76,11 @@ router.get('/:donorId/detail', async (req, res) => {
                 logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
 
-            thumb_detail =
-                await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).filter(item => !item.includes('json') && !item.includes('gif') && item.includes('jpg') || item.includes('png')).map(item => {
-                    return `${BASE_URL}/${donors.club}/${donors.name}/추가 사진/` + item
-                })
+            thumb_detail = await fs.readdirSync(`./public/${donors.club}/${donors.name}/추가 사진`).filter(item => !item.includes('json') && !item.includes('gif') && item.includes('jpg') || item.includes('JPG') || item.includes('png')).map(item => {
+                return `${BASE_URL}/${donors.club}/${donors.name}/추가 사진/` + item
+            })
+
+
         }
         return res.json({
             success: true,
@@ -135,7 +136,7 @@ router.get('/:donorId/article', async (req, res, next) => {
         articleImg =
             await fs.readdirSync(`./public/${exDonor.club}/${exDonor.name}/기사`).filter(item => item.includes('jpg') || item.includes('png')).map(item => {
 
-                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/${exDonor.name}/` + item
+                return `${BASE_URL}/${exDonor.club}/${exDonor.name}/기사/` + item
             })
         articleImg = articleImg.filter(item => item != null)
 

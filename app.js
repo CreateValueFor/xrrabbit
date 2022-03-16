@@ -6,6 +6,7 @@ const cors = require('cors')
 const { sequelize } = require('./models')
 const indexRouter = require('./routes/index');
 const donorRouter = require('./routes/donor');
+const adminRouter = require("./routes/admin")
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/', indexRouter);
 app.use('/donor', donorRouter)
+app.use('/admin', adminRouter)
 
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)
