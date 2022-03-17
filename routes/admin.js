@@ -5,6 +5,22 @@ const Article = require("../models/article")
 const Crimson = require("../models/crimson")
 const router = express.Router();
 const fs = require('fs');
+const multer = require('multer')
+
+try {
+    fs.readdirSync('uploads');
+} catch (error) {
+    console.error("uploasd 폴더가 없어서 uploads 폴더를 생성합니다.")
+    fs.mkdirSync("uploads");
+}
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads')
+        }
+    })
+})
 
 router.post('/donor/:clubId', async (req, res) => {
     const clubId = req.params.clubId

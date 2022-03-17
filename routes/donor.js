@@ -205,6 +205,7 @@ router.get('/:search', async (req, res) => {
     try {
         const { search } = req.params
         const donors = await Donor.findAll({
+            include: [{ model: Article }],
             where: {
 
                 [Op.or]: [
