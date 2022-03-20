@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1096.0",
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "docx4js": "^3.2.20",
@@ -25,7 +26,8 @@
     "mysql2": "^2.3.3",
     "nunjucks": "^3.2.3",
     "sequelize": "^6.17.0",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.4.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
