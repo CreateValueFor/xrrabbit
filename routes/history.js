@@ -229,7 +229,9 @@ router.get('/title/:title', async (req, res) => {
     const BASE_PATH = `./public/history/주제별/${title}`
     if (['교우회', '역대 교사', '스포츠'].includes(title)) {
         try {
-            const data = fs.readdirSync(BASE_PATH)
+            const data = fs.readdirSync(BASE_PATH).map(item => {
+                return `${PUBLIC_URL}주제별/${title}/${item}`
+            })
 
             return res.json({
                 success: true,
