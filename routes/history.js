@@ -6,7 +6,8 @@ const fs = require('fs')
 
 // const PUBLIC_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public/history/"
 // const PUBLIC_URL = 'http://13.209.17.105:8000/public/history/'
-const PUBLIC_URL = 'http://fb15-223-62-216-138.ngrok.io/history/'
+const PUBLIC_URL = 'http://13.125.182.91:8000/public/history/'
+// const PUBLIC_URL = 'http://fb15-223-62-216-138.ngrok.io/history/'
 
 //고대 서울 캠 불러오기
 router.get('/seoul/:duration', async (req, res) => {
