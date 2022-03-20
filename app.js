@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 const { sequelize } = require('./models')
-const indexRouter = require('./routes/index');
+// const indexRouter = require('./routes/index');
 const donorRouter = require('./routes/donor');
 const adminRouter = require("./routes/admin")
 const historyRouter = require("./routes/history")
@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/donor', donorRouter)
 app.use('/admin', adminRouter)
 app.use('/history', historyRouter)

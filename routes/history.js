@@ -6,7 +6,7 @@ const fs = require('fs')
 
 // const PUBLIC_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public/history/"
 // const PUBLIC_URL = 'http://13.209.17.105:8000/public/history/'
-const PUBLIC_URL = 'http://13.125.182.91:8000/public/history/'
+const PUBLIC_URL = 'http://13.125.182.91:8000/history/'
 // const PUBLIC_URL = 'http://fb15-223-62-216-138.ngrok.io/history/'
 
 //고대 서울 캠 불러오기
@@ -302,8 +302,12 @@ router.get("/star/:genre/:name", async (req, res) => {
             nest: true
         })
         const basePath = `./public/history/주제별/스포츠 스타/${genre}/${name}/`;
-        const thumb = await fs.readdirSync(basePath + '대표사진')[0]
-        const thumb_detail = await fs.readdirSync(basePath + "추가사진")
+        const thumb = await fs.readdirSync(basePath + '대표사진').map(item => {
+            return `${PUBLIC_URL}주제별/스포츠 스타/${genre}/${name}/대표사진/${item}`
+        })
+        const thumb_detail = await fs.readdirSync(basePath + "추가사진").map(item => {
+            return `${PUBLIC_URL}주제별/스포츠 스타/${genre}/${name}/추가사진/${item}`
+        })
 
 
         return res.json({
