@@ -110,7 +110,7 @@ router.get('/theme/:theme', async (req, res) => {
 router.get('/people/great/:name', async (req, res) => {
 
     const name = req.params.name
-    const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")}/`
+    const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name}/`
     try {
         const dir = fs.readdirSync(`./public/history/인물별/위인`).filter(item => {
             console.log(item, name, item === name)
