@@ -110,50 +110,29 @@ router.get('/theme/:theme', async (req, res) => {
 router.get('/people/great/:name', async (req, res) => {
 
     const name = req.params.name
-    const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name}/`
+    const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")}/`
     try {
+        const dir = fs.readdirSync(`./public/history/인물별/위인`).filter(item => {
+            console.log(item, name, item === name)
 
-        const img = fs.readdirSync(`./public/history/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
+        })
+        console.log(dir)
+
+
+        const img = fs.readdirSync(`./public/history/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
 
             img: (BASIC_PATH + item),
             folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
+            // folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
         }))
-        const description = fs.readFileSync(`./public/history/인물별/위인/${name}/${name}.txt`).toString()
-
-        res.json({
-            success: true,
-            message: "유저 정보를 정상적으로 불러왔습니다.",
-            data: {
-                description,
-                img,
-
-            }
-        })
-    } catch (err) {
-        res.json({
-            success: false,
-            error: err
-        })
-    }
-})
-// 인물별 위인 불러오기
-router.get('/people/great/:name', async (req, res) => {
-
-    const name = req.params.name
-    const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name}/`
-    try {
-
-        const img = fs.readdirSync(`./public/history/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => BASIC_PATH + item)
-
-
         const description = fs.readFileSync(`./public/history/인물별/위인/${name}/${name}.txt`).toString()
+
         res.json({
             success: true,
             message: "유저 정보를 정상적으로 불러왔습니다.",
             data: {
                 description,
                 img,
-                titles
 
             }
         })
@@ -164,6 +143,35 @@ router.get('/people/great/:name', async (req, res) => {
         })
     }
 })
+// // 인물별 위인 불러오기
+// router.get('/people/great/:name', async (req, res) => {
+//     console.log('asdasdf')
+
+//     const name = req.params.name
+//     const BASIC_PATH = `${PUBLIC_URL}인물별/위인/${name}/`
+//     try {
+
+//         const img = fs.readdirSync(`./public/history/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => BASIC_PATH + item)
+
+
+//         const description = fs.readFileSync(`./public/history/인물별/위인/${name}/${name}.txt`).toString()
+//         res.json({
+//             success: true,
+//             message: "유저 정보를 정상적으로 불러왔습니다.",
+//             data: {
+//                 description,
+//                 img,
+//                 titles
+
+//             }
+//         })
+//     } catch (err) {
+//         res.json({
+//             success: false,
+//             error: err
+//         })
+//     }
+// })
 
 //인물별 이수현 특별히...
 router.get('/people/great/:name/:title', async (req, res) => {
