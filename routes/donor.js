@@ -73,7 +73,7 @@ router.get('/:donorId/detail', async (req, res) => {
             if (thumb) {
                 thumb = `${BASE_URL}/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
-            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`).filter(item => item.includes('jpg') || item.includes('png'))
+            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`).filter(item => item.includes('jpg') || item.includes('png') || item.includes('JPG'))
             if (logo) {
                 logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
