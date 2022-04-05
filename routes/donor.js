@@ -210,9 +210,17 @@ router.get('/:search', async (req, res) => {
         const { search } = req.params
         const club = await Club.findOne({
             where: {
-                club: {
-                    [Op.like]: `%${search}%`
+                [Op.or]: [{
+                    club: {
+                        [Op.like]: `%${search}%`
+                    },
+                },
+                {
+                    name: {
+                        [Op.like]: `%${search}%`
+                    }
                 }
+                ]
             }
         })
         const searchList = [
@@ -240,7 +248,7 @@ router.get('/:search', async (req, res) => {
 
         ]
 
-        club && searchList.push({
+        club && (club.id !== 9) && searchList.push({
             club: club.id
         })
 
@@ -253,25 +261,29 @@ router.get('/:search', async (req, res) => {
 
             }
         })
-        const crimsons = await Crimson.findAll({
-            where: {
+        let crimsons;
+        if (club) {
+            if (club.id !== 9) {
 
-                [Op.or]: [
+                crimsonSearchOption = [
                     {
                         name: {
                             [Op.like]: `%${search}%`
                         }
-                    },
-                    {
-                        level: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-
+                    }
                 ]
+                crimsons = await Crimson.findAll({
+                    where: {
 
+                        [Op.or]: crimsonSearchOption
+
+                    }
+                })
+            } else {
+                crimsons = await Crimson.findAll()
             }
-        })
+        }
+
         res.json({
             success: true,
             message: 'donors searched succesfully',

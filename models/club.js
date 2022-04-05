@@ -11,6 +11,10 @@ module.exports = class Club extends Sequelize.Model {
                 type: Sequelize.INTEGER.UNSIGNED,
                 allowNull: false
             },
+            name: {
+                type: Sequelize.STRING(20),
+                allowNull: false
+            }
         }, {
             sequelize,
             timestamps: false,
