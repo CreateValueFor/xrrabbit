@@ -9,7 +9,8 @@ module.exports = class SportStar extends Sequelize.Model {
             },
             name: {
                 type: Sequelize.STRING(20),
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             major: {
                 type: Sequelize.STRING(20),
