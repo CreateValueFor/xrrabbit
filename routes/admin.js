@@ -152,7 +152,7 @@ router.post('/sports', sportsThumbUpload.fields([{ name: "thumb" }, { name: "thu
 })
 
 router.post('/article', articleUploader.any(), async (req, res, next) => {
-    const { donorId, regDate, title, contents } = req.body
+    const { donorId, regdate, title, contents } = req.body
 
     const exArticle = await Article.findOne({
         where: {
@@ -163,7 +163,7 @@ router.post('/article', articleUploader.any(), async (req, res, next) => {
     let newArticle
     if (exArticle) {
         newArticle = await Article.update({
-            regdate: regDate,
+            regdate,
             title,
             contents,
 
@@ -171,7 +171,7 @@ router.post('/article', articleUploader.any(), async (req, res, next) => {
 
     } else {
         newArticle = await Article.create({
-            regdate: regDate,
+            regdate,
             title,
             contents,
             donor: donorId
@@ -182,6 +182,25 @@ router.post('/article', articleUploader.any(), async (req, res, next) => {
         success: true,
         message: "기사 생성",
         data: newArticle
+    })
+})
+
+router.post('/article/check', async (req, res, next) => {
+    const { search, clubId } = req.body;
+    const donor = await Donor.findOne({ where: { name: search, club: clubId } })
+
+    if (!donor) {
+        return res.json({
+            success: false,
+            message: "기부자 못 찾음",
+
+        })
+    }
+
+    return res.json({
+        success: true,
+        message: "기부자 찾음",
+        data: donor
     })
 })
 
@@ -221,6 +240,7 @@ router.post('/crimson', donorUploader.fields([{ name: 'logo' }, { name: "thumb" 
 
 
 })
+
 
 
 router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }]), async (req, res) => {
