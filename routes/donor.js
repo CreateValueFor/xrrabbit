@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const Donor = require("../models/donor")
 const Article = require("../models/article")
 const Crimson = require("../models/crimson")
+const Club = require('../models/club')
 var router = express.Router();
 const fs = require('fs')
 
@@ -207,33 +208,48 @@ router.get('/:search/:clubId', async (req, res) => {
 router.get('/:search', async (req, res) => {
     try {
         const { search } = req.params
+        const club = await Club.findOne({
+            where: {
+                club: {
+                    [Op.like]: `%${search}%`
+                }
+            }
+        })
+        const searchList = [
+
+            {
+                name: {
+                    [Op.like]: `%${search}%`
+                }
+            },
+            {
+                position: {
+                    [Op.like]: `%${search}%`
+                }
+            },
+            {
+                role: {
+                    [Op.like]: `%${search}%`
+                }
+            },
+            {
+                belong: {
+                    [Op.like]: `%${search}%`
+                }
+            },
+
+        ]
+
+        club && searchList.push({
+            club: club.id
+        })
+
+
         const donors = await Donor.findAll({
             include: [{ model: Article }],
             where: {
 
-                [Op.or]: [
-                    {
-                        name: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        position: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        role: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        belong: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-
-                ]
+                [Op.or]: searchList
 
             }
         })
