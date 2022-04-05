@@ -7,6 +7,7 @@ const router = express.Router();
 const fs = require('fs');
 const multer = require('multer')
 const path = require('path')
+const SportStar = require('../models/sportsStar')
 
 try {
     fs.readdirSync('uploads');
@@ -28,8 +29,56 @@ const upload = multer({
             done(null, path.basename(file.originalname, ext) + Date.now() + ext);
         }
     })
-
 })
+
+
+const sportsThumbUpload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+
+            const { genre, name } = req.body
+            const isExist = fs.existsSync(`public/history/주제별/스포츠 스타/${genre}/${name}`)
+            if (!isExist) {
+
+                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}`)
+                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+            }
+
+            if (file.fieldname === 'thumb') {
+
+                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+            } else {
+                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+
+            }
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname)
+            // console.log(path.basename(file.originalname, ext) + Date.now() + ext)
+            done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+        }
+    })
+})
+
+
+router.post('/sports', sportsThumbUpload.fields([{ name: "thumb" }, { name: "thumb_detail" }]), async (req, res, next) => {
+    const { genre, name, major, description } = req.body;
+    console.log('body check', genre, name, major, description)
+    const newStar = await SportStar.create({
+        genre,
+        name,
+        major,
+        description
+    })
+
+    return res.json({
+        success: true,
+        message: "스포츠 스타 업로드 완료",
+        data: newStar
+    })
+})
+
 
 router.post('/donor/:clubId', upload.fields([{ name: 'logo' }]), async (req, res) => {
     console.log(req.files, req.body)
