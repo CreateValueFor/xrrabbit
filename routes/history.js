@@ -22,7 +22,7 @@ router.get('/seoul/:duration', async (req, res) => {
             })
         }
         const dir = await fs.readdirSync(`./public/history/연혁별/서울캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}서울캠퍼스/${duration}년/${item}`)
+            `${PUBLIC_URL}연혁별/서울캠퍼스/${duration}년/${item}`)
         res.json({
             success: true,
             message: duration + "년의 연혁 사진을 정상적으로 불러왔습니다.",
@@ -51,7 +51,7 @@ router.get('/sejong/:duration', async (req, res) => {
             })
         }
         const dir = await fs.readdirSync(`./public/history/연혁별/세종캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}세종캠퍼스/${duration}년/${item}`)
+            `${PUBLIC_URL}연혁별/세종캠퍼스/${duration}년/${item}`)
         res.json({
             success: true,
             message: duration + "년의 연혁 사진을 정상적으로 불러왔습니다.",

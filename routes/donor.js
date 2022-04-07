@@ -8,7 +8,7 @@ var router = express.Router();
 const fs = require('fs')
 
 // const BASE_URL = 'http://13.209.17.105:8000'
-const BASE_URL = 'http://13.125.182.91:8000'
+const BASE_URL = 'http://13.124.131.69:8000' // 0404
 
 // const BASE_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public"
 // 클럽 별 기부자 목록 보여주기
@@ -74,8 +74,8 @@ router.get('/:donorId/detail', async (req, res) => {
             if (thumb.length) {
                 thumb = `${BASE_URL}/${donors.club}/${donors.name}/대표 사진/` + thumb
             }
-            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`).filter(item => item.includes('jpg') || item.includes('png') || item.includes('JPG') || item.includes('jpeg'))
-            if (logo.length) {
+            logo = await fs.readdirSync(`./public/${donors.club}/${donors.name}/로고`).filter(item => item.includes('jpg') || item.includes('png') || item.includes('JPG') || item.includes('jpeg'))[0] || ""
+            if (logo) {
                 logo = `${BASE_URL}/${donors.club}/${donors.name}/로고/` + logo
             }
 
@@ -90,7 +90,7 @@ router.get('/:donorId/detail', async (req, res) => {
             message: 'donor fetched succesfully',
             data: {
                 ...donors,
-                logo,
+                logo: logo || "",
 
                 thumb,
                 thumb_detail
