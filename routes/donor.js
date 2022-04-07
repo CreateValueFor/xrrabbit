@@ -99,6 +99,7 @@ router.get('/:donorId/detail', async (req, res) => {
                 logo,
 
                 thumb,
+                thumb_detail,
                 thumb_thumb_detail,
 
             }
