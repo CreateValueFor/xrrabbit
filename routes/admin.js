@@ -38,6 +38,7 @@ const sportsThumbUpload = multer({
                 fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}`)
                 fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
             }
 
 
@@ -45,10 +46,12 @@ const sportsThumbUpload = multer({
                 //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
                 fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
                 done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
-            } else {
+            } else if (file.fieldname === 'thumb_detail') {
                 done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
-
+            } else {
+                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
             }
         },
         filename(req, file, done) {
@@ -70,6 +73,7 @@ const donorUploader = multer({
                 fs.mkdirSync(`./public/${clubId}/${name}`)
                 fs.mkdirSync(`./public/${clubId}/${name}/대표 사진`)
                 fs.mkdirSync(`./public/${clubId}/${name}/추가 사진`)
+                fs.mkdirSync(`./public/${clubId}/${name}/thumbnail`)
                 fs.mkdirSync(`./public/${clubId}/${name}/기사`)
                 fs.mkdirSync(`./public/${clubId}/${name}/로고`)
             }
@@ -80,10 +84,13 @@ const donorUploader = multer({
                 //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
                 fsExtra.emptyDirSync(`./public/${clubId}/${name}/대표 사진`)
                 fsExtra.emptyDirSync(`./public/${clubId}/${name}/추가 사진`)
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/thumbnail`)
                 fsExtra.emptyDirSync(`./public/${clubId}/${name}/로고`)
                 done(null, `./public/${clubId}/${name}/대표 사진`)
             } else if (field === 'thumb_detail') {
                 done(null, `./public/${clubId}/${name}/추가 사진`)
+            } else if (field === 'thumb_thumb_detail') {
+                done(null, `./public/${clubId}/${name}/thumbnail`)
             } else if (field === 'logo') {
                 done(null, `./public/${clubId}/${name}/로고`)
             }

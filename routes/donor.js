@@ -44,6 +44,7 @@ router.get('/:donorId/detail', async (req, res) => {
     let logo = "";
     let description = "";
     let thumb_detail = [];
+    let thumb_thumb_detail = [];
     try {
         let donors;
 
@@ -85,6 +86,11 @@ router.get('/:donorId/detail', async (req, res) => {
 
 
         }
+        if (![7, 8, 9].includes(donors.club)) {
+            thumb_thumb_detail = await fs.readdirSync(`./public/${donors.club}/${donors.name}/thumbnail`).filter(item => !item.includes('json') && !item.includes('gif') && item.includes('jpg') || item.includes('JPG') || item.includes('png') || item.includes('jpeg')).map(item => {
+                return `${BASE_URL}/${donors.club}/${donors.name}/thumbnail/` + item
+            })
+        }
         return res.json({
             success: true,
             message: 'donor fetched succesfully',
@@ -93,7 +99,8 @@ router.get('/:donorId/detail', async (req, res) => {
                 logo: logo || "",
 
                 thumb,
-                thumb_detail
+                thumb_thumb_detail,
+
             }
         })
 

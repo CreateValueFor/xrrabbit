@@ -6,7 +6,10 @@ const fs = require('fs')
 
 // const PUBLIC_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public/history/"
 // const PUBLIC_URL = 'http://13.209.17.105:8000/public/history/'
-const PUBLIC_URL = 'http://13.125.182.91:8000/history/'
+// const PUBLIC_URL = 'http://13.125.182.91:8000/history/'
+const PUBLIC_URL = 'http://13.124.131.69:8000/history/'
+
+// const BASE_URL = 'http://13.124.131.69:8000'
 // const PUBLIC_URL = 'http://fb15-223-62-216-138.ngrok.io/history/'
 
 //고대 서울 캠 불러오기
@@ -318,6 +321,9 @@ router.get("/star/:genre/:name", async (req, res) => {
         const thumb_detail = await fs.readdirSync(basePath + "추가사진").map(item => {
             return `${PUBLIC_URL}주제별/스포츠 스타/${genre}/${name}/추가사진/${item}`
         })
+        const thumb_thumb_detail = await fs.readdirSync(basePath + "추가사진").map(item => {
+            return `${PUBLIC_URL}주제별/스포츠 스타/${genre}/${name}/thumbnail/${item}`
+        })
 
 
         return res.json({
@@ -326,7 +332,8 @@ router.get("/star/:genre/:name", async (req, res) => {
             data: {
                 ...star,
                 thumb,
-                thumb_detail
+                thumb_detail,
+                thumb_thumb_detail
             }
         })
     } catch (err) {
