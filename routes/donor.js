@@ -292,11 +292,20 @@ router.get('/:search', async (req, res) => {
             }
         }
 
+        let response = [];
+        if (donors) {
+            response = [...donors]
+        }
+        if (crimsons) {
+            response = [...response, ...crimsons];
+        }
+
         res.json({
             success: true,
             message: 'donors searched succesfully',
-            data: [...donors, ...crimsons]
+            data: response
         })
+
     } catch (err) {
         console.error(err);
         res.json({
