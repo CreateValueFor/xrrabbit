@@ -7,7 +7,7 @@ const fs = require('fs')
 // const PUBLIC_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public/history/"
 // const PUBLIC_URL = 'http://13.209.17.105:8000/public/history/'
 // const PUBLIC_URL = 'http://13.125.182.91:8000/history/'
-const PUBLIC_URL = 'http://13.124.131.69:8000/history/'
+const PUBLIC_URL = 'http://13.125.213.196:8000/history/'
 
 // const BASE_URL = 'http://13.124.131.69:8000'
 // const PUBLIC_URL = 'http://fb15-223-62-216-138.ngrok.io/history/'
@@ -17,7 +17,7 @@ router.get('/seoul/:duration', async (req, res) => {
     const duration = req.params.duration
 
     try {
-        const isExist = await fs.existsSync(`./public/history/original연혁별/서울캠퍼스/${duration}년`)
+        const isExist = await fs.existsSync(`./public/history/original/연혁별/서울캠퍼스/${duration}년`)
         const isIpadExist = await fs.existsSync(`./public/history/ipad/연혁별/서울캠퍼스/${duration}년`)
         if (!isExist || !isIpadExist) {
             return res.status(400).json({
@@ -26,9 +26,9 @@ router.get('/seoul/:duration', async (req, res) => {
             })
         }
         const dir = await fs.readdirSync(`./public/history/original/연혁별/서울캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}original/서울캠퍼스/${duration}년/${item}`)
-        const ipadDir = await fs.readdirSync(`./public/history/history/연혁별/서울캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}history/서울캠퍼스/${duration}년/${item}`)
+            `${PUBLIC_URL}original/연혁별/서울캠퍼스/${duration}년/${item}`)
+        const ipadDir = await fs.readdirSync(`./public/history/ipad/연혁별/서울캠퍼스/${duration}년`).map(item =>
+            `${PUBLIC_URL}history/연혁별/서울캠퍼스/${duration}년/${item}`)
         res.json({
             success: true,
             message: duration + "년의 연혁 사진을 정상적으로 불러왔습니다.",
@@ -60,10 +60,10 @@ router.get('/sejong/:duration', async (req, res) => {
                 message: '해당 년도의 연혁 사진이 존재하지 않습니다.'
             })
         }
-        const dir = await fs.readdirSync(`./public/history/origianl/연혁별/세종캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}original/세종캠퍼스/${duration}년/${item}`)
+        const dir = await fs.readdirSync(`./public/history/original/연혁별/세종캠퍼스/${duration}년`).map(item =>
+            `${PUBLIC_URL}original/연혁별/세종캠퍼스/${duration}년/${item}`)
         const ipadDir = await fs.readdirSync(`./public/history/ipad/연혁별/세종캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}ipad/세종캠퍼스/${duration}년/${item}`)
+            `${PUBLIC_URL}ipad/연혁별/세종캠퍼스/${duration}년/${item}`)
         res.json({
             success: true,
             message: duration + "년의 연혁 사진을 정상적으로 불러왔습니다.",
@@ -297,7 +297,10 @@ router.get("/title/:title/:subtitle", async (req, res) => {
             return res.json({
                 success: true,
                 message: `${subtitle} 사진들을 정상적으로 불러왔습니다.`,
-                data
+                data: {
+                    origin: data,
+                    ipad: ipadData
+                }
             })
         } catch (error) {
             return res.status(400).json({

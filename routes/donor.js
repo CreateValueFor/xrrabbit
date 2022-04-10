@@ -8,7 +8,7 @@ var router = express.Router();
 const fs = require('fs')
 
 // const BASE_URL = 'http://13.209.17.105:8000'
-const BASE_URL = 'http://13.124.131.69:8000' // 0404
+const BASE_URL = 'http://13.125.213.196:8000' // 0404
 
 // const BASE_URL = "https://xrrabbit.s3.ap-northeast-2.amazonaws.com/public"
 // 클럽 별 기부자 목록 보여주기
