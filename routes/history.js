@@ -28,7 +28,7 @@ router.get('/seoul/:duration', async (req, res) => {
         const dir = await fs.readdirSync(`./public/history/original/연혁별/서울캠퍼스/${duration}년`).map(item =>
             `${PUBLIC_URL}original/연혁별/서울캠퍼스/${duration}년/${item}`)
         const ipadDir = await fs.readdirSync(`./public/history/ipad/연혁별/서울캠퍼스/${duration}년`).map(item =>
-            `${PUBLIC_URL}history/연혁별/서울캠퍼스/${duration}년/${item}`)
+            `${PUBLIC_URL}ipad/연혁별/서울캠퍼스/${duration}년/${item}`)
         res.json({
             success: true,
             message: duration + "년의 연혁 사진을 정상적으로 불러왔습니다.",
