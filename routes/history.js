@@ -135,13 +135,13 @@ router.get('/people/great/:name', async (req, res) => {
     const BASIC_PATH = `${PUBLIC_URL}original/인물별/위인/${name}/`
     const IPAD_PATH = `${PUBLIC_URL}ipad/인물별/위인/${name}/`
     try {
-        const dir = fs.readdirSync(`./public/history/original/인물별/위인`).filter(item => {
-            console.log(item, name, item === name)
-        })
-        const ipadDir = fs.readdirSync(`./public/history/ipad/인물별/위인`).filter(item => {
-            console.log(item, name, item === name)
-        })
-        console.log(dir)
+        // const dir = fs.readdirSync(`./public/history/original/인물별/위인`).filter(item => {
+        //     console.log(item, name, item === name)
+        // })
+        // const ipadDir = fs.readdirSync(`./public/history/ipad/인물별/위인`).filter(item => {
+        //     console.log(item, name, item === name)
+        // })
+        // console.log(dir)
 
 
         const img = fs.readdirSync(`./public/history/original/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
@@ -152,7 +152,7 @@ router.get('/people/great/:name', async (req, res) => {
         }))
         const ipadImg = fs.readdirSync(`./public/history/ipad/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
 
-            img: (BASIC_PATH + item),
+            img: (IPAD_PATH + item),
             folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
             // folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
         }))
