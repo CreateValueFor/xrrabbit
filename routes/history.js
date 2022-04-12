@@ -298,7 +298,7 @@ router.get("/title/:title/:subtitle", async (req, res) => {
                 success: true,
                 message: `${subtitle} 사진들을 정상적으로 불러왔습니다.`,
                 data: {
-                    origin: data,
+                    original: data,
                     ipad: ipadData
                 }
             })
