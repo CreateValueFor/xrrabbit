@@ -152,7 +152,7 @@ router.get('/people/great/:name', async (req, res) => {
         }))
         const ipadImg = fs.readdirSync(`./public/history/ipad/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
 
-            img: (BASIC_PATH + item),
+            img: (ipadDir + item),
             folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
             // folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
         }))
