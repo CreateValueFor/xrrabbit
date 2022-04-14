@@ -144,7 +144,7 @@ router.get('/people/great/:name', async (req, res) => {
         // console.log(dir)
 
 
-        const img = fs.readdirSync(`./public/history/original/인물별/위인/${name}`).filter(item => item.includes('png')).map(item => ({
+        const img = fs.readdirSync(`./public/history/original/인물별/위인/${name}`).filter(item => item.includes('jpg') ||  item.includes('png')).map(item => ({
 
             img: (BASIC_PATH + item),
             folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")

@@ -180,18 +180,7 @@ router.get('/:search/:clubId', async (req, res) => {
                         }
                     },
                     {
-                        belong: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-
-                    {
                         role: {
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        position: {
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -239,17 +228,7 @@ router.get('/:search', async (req, res) => {
                 }
             },
             {
-                position: {
-                    [Op.like]: `%${search}%`
-                }
-            },
-            {
                 role: {
-                    [Op.like]: `%${search}%`
-                }
-            },
-            {
-                belong: {
                     [Op.like]: `%${search}%`
                 }
             },
