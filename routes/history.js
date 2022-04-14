@@ -116,7 +116,7 @@ router.get('/theme/:theme', async (req, res) => {
     const dir = await fs.readdirSync(`./public/history/original/테마별/${theme}`)
         .map(item => BASIC_PATH + item)
     const ipadDir = await fs.readdirSync(`./public/history/ipad/테마별/${theme}`)
-        .map(item => BASIC_PATH + item)
+        .map(item => IPAD_PATH + item)
 
     res.json({
         success: true,

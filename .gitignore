@@ -5,3 +5,5 @@ datas
 public
 public.tar.gz
 public/*
+config/config.json
+config/*
