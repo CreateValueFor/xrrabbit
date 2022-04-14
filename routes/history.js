@@ -288,7 +288,7 @@ router.get('/title/:title', async (req, res) => {
 
 router.get("/title/:title/:subtitle", async (req, res) => {
     const { title, subtitle } = req.params
-    if (['학생활동', '축제', '고연전'].includes(title)) {
+    if (['건물','학생활동', '축제', '고연전'].includes(title)) {
         try {
             const data = fs.readdirSync(`./public/history/original/주제별/${title}/${subtitle}`)
                 .map(item => `${PUBLIC_URL}original/주제별/${title}/${subtitle}/${item}`)
