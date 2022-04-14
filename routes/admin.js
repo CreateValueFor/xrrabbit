@@ -253,6 +253,7 @@ router.post('/crimson', donorUploader.fields([{ name: 'logo' }, { name: "thumb" 
 router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }]), async (req, res) => {
 
     // const clubId = req.params.clubId
+
     const { name, role, belong, position, description, clubId } = req.body
     switch (clubId) {
         case '1':
@@ -262,11 +263,13 @@ router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" },
         case '5':
         case '6':
             try {
+
                 const exUser = await Donor.findOne({
                     where: {
-                        name, role, belong, position
+                        name: name
                     }
                 })
+
 
                 let newDonor;
                 if (exUser) {
@@ -275,11 +278,12 @@ router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" },
                     }, { where: { id: exUser.id } })
                 } else {
 
+
                     newDonor = await Donor.create({
                         name,
-                        role,
-                        belong,
-                        position,
+                        role: role || '기업',
+                        belong: belong || "일반",
+                        position: position || "일반",
                         description,
                         club: clubId
                     })
@@ -294,7 +298,8 @@ router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" },
             } catch (error) {
                 return res.status(400).json({
                     code: false,
-                    error
+                    error,
+
                 })
             }
             console.log('덜 복잡한 입력값들')
