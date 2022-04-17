@@ -64,9 +64,46 @@ const sportsThumbUpload = multer({
 
 const donorUploader = multer({
     storage: multer.diskStorage({
-        destination(req, file, done) {
+        async destination(req, file, done) {
+
+            const donorId = req.params.donorId;
+            const exDonor = await Donor.findOne({ where: { id: donorId } });
+            const clubId = exDonor.club
+            const name = exDonor.name
+            // const { clubId, name } = req.body
+
+            const field = file.fieldname;
+
+            if (field === 'thumb') {
+                //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/대표 사진`)
+                done(null, `./public/${clubId}/${name}/대표 사진`)
+            } else if (field === 'thumb_detail') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/추가 사진`)
+                done(null, `./public/${clubId}/${name}/추가 사진`)
+            } else if (field === 'thumb_thumb_detail') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/thumbnail`)
+                done(null, `./public/${clubId}/${name}/thumbnail`)
+            } else if (field === 'logo') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/로고`)
+                done(null, `./public/${clubId}/${name}/로고`)
+            }
+
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname)
+            // console.log(path.basename(file.originalname, ext) + Date.now() + ext)
+            done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+        }
+    })
+})
+
+const crimsonUploader = multer({
+    storage: multer.diskStorage({
+        async destination(req, file, done) {
 
             const { clubId, name } = req.body
+
             const isExist = fs.existsSync(`public/${clubId}/${name}`)
             if (!isExist) {
 
@@ -83,17 +120,18 @@ const donorUploader = multer({
             if (field === 'thumb') {
                 //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
                 fsExtra.emptyDirSync(`./public/${clubId}/${name}/대표 사진`)
-                fsExtra.emptyDirSync(`./public/${clubId}/${name}/추가 사진`)
-                fsExtra.emptyDirSync(`./public/${clubId}/${name}/thumbnail`)
-                fsExtra.emptyDirSync(`./public/${clubId}/${name}/로고`)
                 done(null, `./public/${clubId}/${name}/대표 사진`)
             } else if (field === 'thumb_detail') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/추가 사진`)
                 done(null, `./public/${clubId}/${name}/추가 사진`)
             } else if (field === 'thumb_thumb_detail') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/thumbnail`)
                 done(null, `./public/${clubId}/${name}/thumbnail`)
             } else if (field === 'logo') {
+                fsExtra.emptyDirSync(`./public/${clubId}/${name}/로고`)
                 done(null, `./public/${clubId}/${name}/로고`)
             }
+
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname)
@@ -211,7 +249,7 @@ router.post('/article/check', async (req, res, next) => {
     })
 })
 
-router.post('/crimson', donorUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }]), async (req, res, next) => {
+router.post('/crimson', crimsonUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }]), async (req, res, next) => {
     const { name, phone, address, level } = req.body;
     const exCrimson = await Crimson.findOne({
         where: {
@@ -248,7 +286,58 @@ router.post('/crimson', donorUploader.fields([{ name: 'logo' }, { name: "thumb" 
 
 })
 
+router.get('/donor', async (req, res, next) => {
+    const { page, keyword } = req.query;
 
+    const searchQuery = [];
+    const limit = 10;
+
+    let donorList
+    if (keyword) {
+        searchQuery.push(
+            {
+                name: {
+                    [Op.like]: `%${keyword}%`
+                }
+            })
+        donorList = await Donor.findAndCountAll({
+            where:
+                { [Op.or]: searchQuery },
+            offset: limit * page,
+            limit: 10
+        })
+    } else {
+        donorList = await Donor.findAndCountAll({
+
+            offset: limit * page,
+            limit: 10
+        })
+
+    }
+
+
+
+
+    return res.json({
+        success: true,
+        data: donorList
+    })
+})
+
+router.delete('/donor', async (req, res, next) => {
+    const deleteList = req.body.deleteList
+
+    const destroy = await Donor.destroy({
+        where: {
+            id: { [Op.in]: deleteList }
+        }
+    })
+    console.log(destroy)
+    return res.json({
+        success: true,
+        data: deleteList
+    })
+})
 
 router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }]), async (req, res) => {
 
@@ -355,6 +444,94 @@ router.post('/donor', donorUploader.fields([{ name: 'logo' }, { name: "thumb" },
         message: "기부자가 성공적으로 등록되었습니다.",
         data: []
 
+    })
+})
+
+router.get('/donor/:donorId', async (req, res, next) => {
+    const donorId = req.params.donorId;
+    const exUser = await Donor.findOne({
+        where: {
+            id: donorId
+        }
+    })
+
+    return res.json({
+        success: true,
+        message: '정상 호출',
+        data: exUser
+    })
+})
+
+router.put('/donor/:donorID', async (req, res, next) => {
+    const id = req.params.donorID
+    const { name, role, belong, position, description, clubId } = req.body;
+    const newUser = await Donor.update(
+        {
+            name, role, belong, position, description, club: clubId
+        }
+        , { where: { id } })
+    return res.json({
+        success: true,
+        message: "기부자 업데이트 성공",
+        data: newUser
+    })
+
+})
+
+router.post("/donor/:donorId/image", donorUploader.fields([{ name: 'logo' }, { name: "thumb" }, { name: "thumb_detail" }, , { name: "thumb_thumb_detail" }]), (req, res, next) => {
+    res.json({
+        success: true
+    })
+})
+
+
+router.post('/preDonor', async (req, res, next) => {
+    const { name, role, belong, position, description, clubId } = req.body
+
+
+
+    const exUser = await Donor.findOne({
+        where: {
+            name: name,
+            club: clubId
+        }
+    })
+
+
+    let newDonor;
+    if (exUser) {
+        return res.json({
+            success: false,
+            errorCode: 'DP001',
+            message: '이미 같은 이름의 기부자가 존재합니다.'
+        })
+    } else {
+        const isExist = fs.existsSync(`public/${clubId}/${name}`)
+        if (!isExist) {
+
+            fs.mkdirSync(`./public/${clubId}/${name}`)
+            fs.mkdirSync(`./public/${clubId}/${name}/대표 사진`)
+            fs.mkdirSync(`./public/${clubId}/${name}/추가 사진`)
+            fs.mkdirSync(`./public/${clubId}/${name}/thumbnail`)
+            fs.mkdirSync(`./public/${clubId}/${name}/기사`)
+            fs.mkdirSync(`./public/${clubId}/${name}/로고`)
+        }
+
+
+        newDonor = await Donor.create({
+            name,
+            role,
+            belong,
+            position,
+            description,
+            club: clubId
+        })
+    }
+
+    return res.json({
+        success: true,
+        message: "기부자가 성공적으로 등록되었습니다.",
+        data: newDonor
     })
 })
 

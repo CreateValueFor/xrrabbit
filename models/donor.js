@@ -15,6 +15,7 @@ module.exports = class Donor extends Sequelize.Model {
             },
             description: {
                 type: Sequelize.TEXT,
+
             },
             role: {
                 type: Sequelize.STRING(200),
@@ -26,6 +27,10 @@ module.exports = class Donor extends Sequelize.Model {
             position: {
                 type: Sequelize.STRING(20),
             },
+            createdAt: {
+                type: Sequelize.DATEONLY,
+                defaultValue: Date.now()
+            }
 
 
         }, {
