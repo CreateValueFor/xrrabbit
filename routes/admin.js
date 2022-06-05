@@ -294,11 +294,13 @@ router.get('/donor', async (req, res, next) => {
 
     let donorList
     if (keyword) {
+
         searchQuery.push(
             {
                 name: {
                     [Op.like]: `%${keyword}%`
                 }
+
             })
         donorList = await Donor.findAndCountAll({
             where:
@@ -535,5 +537,140 @@ router.post('/preDonor', async (req, res, next) => {
     })
 })
 
+router.post("/login", async (req, res, next) => {
+    const { id, password } = req.body;
+    if (id === 'historyroom' && password === "crimson0505") {
+        return res.json({
+            success: true,
+            message: "로그인 성공"
+        })
+    } else {
+        return res.json({
+            success: false,
+            message: '로그인 실패'
+        })
+    }
+
+
+
+})
+
+// 기사 관리
+
+router.get('/article', async (req, res, next) => {
+    const { page, keyword } = req.query;
+
+    const searchQuery = [];
+    const limit = 10;
+
+    let articleList
+    if (keyword) {
+        searchQuery.push(
+            {
+                "$Donor.name$": {
+                    [Op.like]: `%${keyword}%`
+                }
+            })
+        articleList = await Article.findAndCountAll({
+            where:
+                { [Op.or]: searchQuery },
+            offset: limit * page,
+            limit: 10,
+            include: [{
+                model: Donor,
+
+
+            }]
+        })
+    } else {
+        articleList = await Article.findAndCountAll({
+
+            offset: limit * page,
+            limit: 10,
+            include: [Donor]
+        })
+
+    }
+
+
+
+
+    return res.json({
+        success: true,
+        data: articleList
+    })
+})
+
+router.delete('/article', async (req, res, next) => {
+    const deleteList = req.body.deleteList
+
+    const destroy = await Article.destroy({
+        where: {
+            id: { [Op.in]: deleteList }
+        }
+    })
+    console.log(destroy)
+    return res.json({
+        success: true,
+        data: deleteList
+    })
+})
+
+// 스포츠 스타 관리
+
+router.get('/sportstar', async (req, res, next) => {
+    const { page, keyword } = req.query;
+
+    const searchQuery = [];
+    const limit = 10;
+
+    let starList
+    if (keyword) {
+        searchQuery.push(
+            {
+                name: {
+                    [Op.like]: `%${keyword}%`
+                }
+            })
+        starList = await SportStar.findAndCountAll({
+            where:
+                { [Op.or]: searchQuery },
+            offset: limit * page,
+            limit: 10,
+
+        })
+    } else {
+        starList = await SportStar.findAndCountAll({
+
+            offset: limit * page,
+            limit: 10,
+
+        })
+
+    }
+
+
+
+
+    return res.json({
+        success: true,
+        data: starList
+    })
+})
+
+router.delete('/sportstar', async (req, res, next) => {
+    const deleteList = req.body.deleteList
+
+    const destroy = await SportStar.destroy({
+        where: {
+            id: { [Op.in]: deleteList }
+        }
+    })
+
+    return res.json({
+        success: true,
+        data: deleteList
+    })
+})
 
 module.exports = router

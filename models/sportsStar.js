@@ -18,7 +18,12 @@ module.exports = class SportStar extends Sequelize.Model {
             },
             description: {
                 type: Sequelize.TEXT,
-            }
+            },
+            regdate: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.NOW
+            },
 
         }, {
             sequelize,
