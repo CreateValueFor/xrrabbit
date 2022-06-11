@@ -30,40 +30,55 @@ const upload = multer({
 const sportsThumbUpload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
+            const ext = path.extname(file.originalname)
 
             const { genre, name } = req.body
+
             const isExist = fs.existsSync(`public/history/original/주제별/스포츠 스타/${genre}/${name}`)
+
             if (!isExist) {
+
 
                 fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}`)
                 fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/추가사진`)
                 fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-            
 
-                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+
+                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}`)
                 fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/추가사진`)
                 fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-	    }
+            }
+
+
 
 
             if (file.fieldname === 'thumb') {
+
                 //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
                 fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/추가사진`)
                 fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-                
+
 
                 fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/대표사진`)
                 fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/추가사진`)
                 fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-		
-		done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+
+                done(null, `public/history/original/주제별/스포츠 스타/${genre}/${name}/대표사진`)
             } else if (file.fieldname === 'thumb_detail') {
-                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+
+                done(null, `public/history/original/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+            } else if (file.fieldname === 'thumb_ipad') {
+
+                done(null, `public/history/ipad/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+            } else if (file.fieldname === 'thumb_detail_ipad') {
+
+                done(null, `public/history/ipad/주제별/스포츠 스타/${genre}/${name}/추가사진`)
             } else {
-                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+
+                done(null, `public/history/original/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
             }
         },
         filename(req, file, done) {
@@ -173,6 +188,7 @@ const articleUploader = multer({
 
 router.post('/sports', sportsThumbUpload.fields([{ name: "thumb" }, { name: "thumb_detail" }]), async (req, res, next) => {
     const { genre, name, major, description } = req.body;
+    console.log('haasdf')
 
     const exStar = await SportStar.findOne({
         where: {
