@@ -144,7 +144,7 @@ router.get('/people/great/:name', async (req, res) => {
         // console.log(dir)
 
 
-        const img = fs.readdirSync(`./public/history/original/인물별/위인/${name}`).filter(item => item.includes('jpg') ||  item.includes('png')).map(item => ({
+        const img = fs.readdirSync(`./public/history/original/인물별/위인/${name}`).filter(item => item.includes('jpg') || item.includes('png')).map(item => ({
 
             img: (BASIC_PATH + item),
             folder: item.replace(/[^\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/gi, "")
@@ -288,7 +288,7 @@ router.get('/title/:title', async (req, res) => {
 
 router.get("/title/:title/:subtitle", async (req, res) => {
     const { title, subtitle } = req.params
-    if (['건물','학생활동', '축제', '고연전'].includes(title)) {
+    if (['건물', '학생활동', '축제', '고연전'].includes(title)) {
         try {
             const data = fs.readdirSync(`./public/history/original/주제별/${title}/${subtitle}`)
                 .map(item => `${PUBLIC_URL}original/주제별/${title}/${subtitle}/${item}`)
@@ -337,7 +337,7 @@ router.get("/star/:genre/:name", async (req, res) => {
     const { genre, name } = req.params;
     try {
         const star = await SportsStar.findOne({
-            where: { name },
+            where: { name, genre },
             raw: true,
             nest: true
         })

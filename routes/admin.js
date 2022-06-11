@@ -32,22 +32,34 @@ const sportsThumbUpload = multer({
         destination(req, file, done) {
 
             const { genre, name } = req.body
-            const isExist = fs.existsSync(`public/history/주제별/스포츠 스타/${genre}/${name}`)
+            const isExist = fs.existsSync(`public/history/original/주제별/스포츠 스타/${genre}/${name}`)
             if (!isExist) {
 
-                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}`)
-                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
-                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
-                fs.mkdirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-            }
+                fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}`)
+                fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fs.mkdirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+            
+
+                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fs.mkdirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+	    }
 
 
             if (file.fieldname === 'thumb') {
                 //무조건 하나 있는 경우에 다 삭제하고 업로드 진행
-                fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
-                fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
-                fsExtra.emptyDirSync(`./public/history/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
-                done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fsExtra.emptyDirSync(`./public/history/original/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+                
+
+                fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/대표사진`)
+                fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/추가사진`)
+                fsExtra.emptyDirSync(`./public/history/ipad/주제별/스포츠 스타/${genre}/${name}/thumbnail`)
+		
+		done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/대표사진`)
             } else if (file.fieldname === 'thumb_detail') {
                 done(null, `public/history/주제별/스포츠 스타/${genre}/${name}/추가사진`)
             } else {
